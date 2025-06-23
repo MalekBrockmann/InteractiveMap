@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Event Tracker - Interaktive Europa-Karte</title>
+    <title>Global News Map - Interaktive Europa-Karte</title>
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -62,19 +62,17 @@
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 1rem;
         }
 
         .logo-svg {
-            width: 40px;
             height: 40px;
+            width: auto;
             flex-shrink: 0;
+            object-fit: contain;
         }
 
         .nav-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-color);
+            display: none;
         }
 
         .country-dropdown {
@@ -371,13 +369,8 @@
 <body>
     <header class="header">
         <div class="logo-container">
-            <svg class="logo-svg" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="90" cy="90" r="80" fill="#007AFF"/>
-                <path d="M60,60 Q70,40 90,40 Q110,40 120,60 Q130,80 110,100 Q100,110 90,120 Q80,110 70,100 Q50,80 60,60Z" fill="#ffffff"/>
-                <rect x="80" y="65" width="12" height="50" rx="6" fill="#007AFF"/>
-                <rect x="100" y="65" width="12" height="50" rx="6" fill="#007AFF"/>
-            </svg>
-            <div class="nav-title">Global Event Tracker</div>
+            <img src="Bilder/Global-News-Map-Banner.png" alt="Global News Map Banner" class="logo-svg">
+            <div class="nav-title">Europe News Map</div>
         </div>
         <div class="country-dropdown">
             <button class="dropdown-btn">
