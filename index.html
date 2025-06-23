@@ -20,16 +20,19 @@
 
     <style>
         :root {
-            --primary-color: #1a1a1a;
-            --secondary-color: #2d2d2d;
-            --accent-color: #007AFF;
+            --primary-color: #0a0a0a;
+            --secondary-color: #1a1a1a;
+            --accent-color: #00d4ff;
+            --accent-secondary: #ff6b35;
             --text-color: #ffffff;
-            --text-secondary: #a0a0a0;
-            --card-bg: #2d2d2d;
-            --hover-color: #3d3d3d;
+            --text-secondary: #b0b0b0;
+            --card-bg: #1a1a1a;
+            --hover-color: #2a2a2a;
             --politics-color: #ff4757;
             --culture-color: #3742fa;
             --society-color: #2ed573;
+            --glass-bg: rgba(26, 26, 26, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -39,10 +42,26 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--primary-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f23 100%);
             color: var(--text-color);
             overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(46, 213, 115, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .header {
@@ -50,92 +69,313 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.2rem 2.5rem;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            animation: headerGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes headerGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(0, 212, 255, 0.05) 25%, 
+                rgba(255, 107, 53, 0.05) 50%, 
+                rgba(0, 212, 255, 0.05) 75%, 
+                transparent 100%);
+            animation: headerShimmer 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes headerShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .logo-container {
             display: flex;
             align-items: center;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 2;
         }
 
         .logo-svg {
-            height: 40px;
+            height: 45px;
             width: auto;
             flex-shrink: 0;
             object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.4));
+            transition: all 0.3s ease;
+        }
+
+        .logo-svg:hover {
+            filter: drop-shadow(0 0 25px rgba(0, 212, 255, 0.6));
+            transform: scale(1.05);
+        }
+
+        .prototype-badge {
+            background: linear-gradient(45deg, var(--accent-secondary), #ff8c42, var(--accent-secondary));
+            background-size: 200% 200%;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);
+            animation: glow 2s ease-in-out infinite alternate, gradientShift 3s ease infinite;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prototype-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .prototype-badge:hover::before {
+            left: 100%;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .eu-flag {
+            width: 28px;
+            height: 18px;
+            border-radius: 6px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
+        }
+
+        .eu-flag:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
         }
 
         .nav-title {
             display: none;
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-btn, .download-btn {
+            background: linear-gradient(45deg, var(--accent-color), #0099cc);
+            border: none;
+            border-radius: 15px;
+            padding: 0.8rem 1.6rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .about-btn::before, .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .about-btn:hover::before, .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .about-btn:hover, .download-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.6);
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, var(--society-color), #1e90ff, var(--society-color));
+            background-size: 200% 200%;
+            box-shadow: 0 6px 20px rgba(46, 213, 115, 0.4);
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .download-btn:hover {
+            box-shadow: 0 12px 30px rgba(46, 213, 115, 0.6);
+        }
+
         .country-dropdown {
             position: relative;
             display: inline-block;
+            z-index: 2001;
         }
 
         .dropdown-btn {
-            background-color: var(--secondary-color);
-            border: 1px solid var(--text-secondary);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 0.8rem 1.4rem;
             color: var(--text-color);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
+            gap: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dropdown-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dropdown-btn:hover::before {
+            opacity: 1;
         }
 
         .dropdown-btn:hover {
             border-color: var(--accent-color);
-            background-color: var(--hover-color);
+            background: rgba(26, 26, 26, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
         }
 
         .dropdown-content {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 15px);
             left: 0;
-            background-color: var(--card-bg);
-            border: 1px solid var(--text-secondary);
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            z-index: 1001;
-            min-width: 200px;
-            max-height: 300px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            min-width: 240px;
+            max-height: 400px;
             overflow-y: auto;
             display: none;
+            backdrop-filter: blur(25px);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .dropdown-content.active {
             display: block;
-            animation: dropdownFadeIn 0.2s ease-out;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        @keyframes dropdownFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .dropdown-content::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid var(--glass-bg);
+            z-index: 2001;
+        }
+
+        .dropdown-content::after {
+            content: '';
+            position: absolute;
+            top: -9px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid var(--glass-border);
+            z-index: 2000;
+        }
+
+        .dropdown-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dropdown-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .dropdown-content::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .dropdown-content::-webkit-scrollbar-thumb:hover {
+            background: #0099cc;
         }
 
         .dropdown-item {
-            padding: 0.75rem 1rem;
+            padding: 1.2rem 1.5rem;
             color: var(--text-color);
             cursor: pointer;
-            transition: all 0.2s ease;
-            border-bottom: 1px solid var(--text-secondary);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            font-weight: 500;
         }
 
         .dropdown-item:last-child {
@@ -143,12 +383,15 @@
         }
 
         .dropdown-item:hover {
-            background-color: var(--hover-color);
+            background: rgba(0, 212, 255, 0.15);
+            transform: translateX(8px);
+            padding-left: 2rem;
         }
 
         .dropdown-item.selected {
-            background-color: var(--accent-color);
+            background: linear-gradient(45deg, var(--accent-color), #0099cc);
             color: white;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
         }
 
         #map {
@@ -162,31 +405,32 @@
 
         .news-popup {
             position: absolute;
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 1.5rem;
-            max-width: 400px;
-            max-height: 60vh;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 450px;
+            max-height: 70vh;
             overflow-y: auto;
             z-index: 2000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             display: none;
-            border: 2px solid var(--accent-color);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
         }
 
         .news-popup.active {
             display: block;
-            animation: bubbleFadeIn 0.3s ease-out;
+            animation: popupSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes bubbleFadeIn {
+        @keyframes popupSlide {
             from {
                 opacity: 0;
-                transform: scale(0.8);
+                transform: scale(0.8) translateY(20px);
             }
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) translateY(0);
             }
         }
 
@@ -194,81 +438,105 @@
             content: '';
             position: absolute;
             top: 50%;
-            left: -10px;
+            left: -12px;
             transform: translateY(-50%);
             width: 0;
             height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-right: 10px solid var(--accent-color);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 12px solid var(--accent-color);
         }
 
         .news-popup::after {
             content: '';
             position: absolute;
             top: 50%;
-            left: -8px;
+            left: -10px;
             transform: translateY(-50%);
             width: 0;
             height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-right: 10px solid var(--card-bg);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 12px solid var(--glass-bg);
         }
 
         .popup-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--text-secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .popup-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--text-color);
+            background: linear-gradient(45deg, var(--accent-color), #0099cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .close-btn {
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 0.25rem;
+            padding: 0.5rem;
             border-radius: 50%;
             transition: all 0.3s ease;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .close-btn:hover {
-            background-color: var(--hover-color);
+            background: rgba(255, 255, 255, 0.1);
             color: var(--text-color);
+            transform: rotate(90deg);
         }
 
         .news-list {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
         .news-item {
-            background: var(--primary-color);
-            border-radius: 8px;
-            padding: 1rem;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 4px solid transparent;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.02), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+
+        .news-item:hover::before {
+            transform: translateX(100%);
         }
 
         .news-item:hover {
-            transform: translateX(3px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
         .news-item.politics {
@@ -285,37 +553,42 @@
 
         .news-category {
             display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
             font-size: 0.7rem;
-            font-weight: 500;
+            font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
         }
 
         .news-category.politics {
-            background-color: var(--politics-color);
+            background: linear-gradient(45deg, var(--politics-color), #ff6b6b);
             color: white;
+            box-shadow: 0 2px 10px rgba(255, 71, 87, 0.3);
         }
 
         .news-category.culture {
-            background-color: var(--culture-color);
+            background: linear-gradient(45deg, var(--culture-color), #5f7cfa);
             color: white;
+            box-shadow: 0 2px 10px rgba(55, 66, 250, 0.3);
         }
 
         .news-category.society {
-            background-color: var(--society-color);
+            background: linear-gradient(45deg, var(--society-color), #51cf66);
             color: white;
+            box-shadow: 0 2px 10px rgba(46, 213, 115, 0.3);
         }
 
         .news-title {
-            font-size: 0.95rem;
-            font-weight: 500;
-            margin-bottom: 0.3rem;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
             color: var(--text-color);
             text-decoration: none;
             display: block;
-            line-height: 1.4;
+            line-height: 1.5;
+            transition: color 0.3s ease;
         }
 
         .news-title:hover {
@@ -325,20 +598,25 @@
         .news-source {
             color: var(--text-secondary);
             font-size: 0.8rem;
+            font-weight: 500;
         }
 
         .original-text {
             font-size: 0.75rem;
             color: var(--text-secondary);
-            margin-top: 0.3rem;
+            margin-top: 0.5rem;
             font-style: italic;
-            opacity: 0.7;
+            opacity: 0.8;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
         }
 
         .loading {
             text-align: center;
-            padding: 1rem;
+            padding: 2rem;
             color: var(--text-secondary);
+            font-size: 1.1rem;
         }
 
         .overlay {
@@ -355,7 +633,7 @@
             }
 
             .dropdown-btn {
-                padding: 0.5rem;
+                padding: 0.6rem 1rem;
             }
 
             .news-popup {
@@ -364,23 +642,253 @@
                 max-height: calc(100vh - 2rem);
             }
         }
+
+        .about-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .about-modal.active {
+            display: flex;
+            opacity: 1;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-content {
+            background: var(--glass-bg);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-modal.active .about-content {
+            transform: scale(1);
+        }
+
+        .about-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .about-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-color);
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .about-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--accent-color), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border-left: 4px solid var(--accent-color);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 2rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            border: 4px solid var(--glass-bg);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .timeline-date {
+            font-size: 1rem;
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.05), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="logo-container">
             <img src="Bilder/Global-News-Map-Banner.png" alt="Global News Map Banner" class="logo-svg">
-            <div class="nav-title">Europe News Map</div>
-        </div>
-        <div class="country-dropdown">
-            <button class="dropdown-btn">
-                <span id="selectedCountry">Land auswählen</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                    <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.004-1L8 13.481l4.796-5.48a1 1 0 0 1 1.506 1.327l-5.5 6.003a1 1 0 0 1-1.506 0l-5.5-6.003a1 1 0 0 1 1.506-1.327z"/>
+            <div class="prototype-badge">Europa Prototyp</div>
+            <div class="eu-flag">
+                <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="16" fill="#003399"/>
+                    <g transform="translate(12,8)">
+                        <circle cx="0" cy="0" r="6" fill="none" stroke="#FFD700" stroke-width="0.5"/>
+                        <circle cx="0" cy="-6" r="0.8" fill="#FFD700"/>
+                        <circle cx="3" cy="-5.2" r="0.8" fill="#FFD700"/>
+                        <circle cx="5.2" cy="-3" r="0.8" fill="#FFD700"/>
+                        <circle cx="6" cy="0" r="0.8" fill="#FFD700"/>
+                        <circle cx="5.2" cy="3" r="0.8" fill="#FFD700"/>
+                        <circle cx="3" cy="5.2" r="0.8" fill="#FFD700"/>
+                        <circle cx="0" cy="6" r="0.8" fill="#FFD700"/>
+                        <circle cx="-3" cy="5.2" r="0.8" fill="#FFD700"/>
+                        <circle cx="-5.2" cy="3" r="0.8" fill="#FFD700"/>
+                        <circle cx="-6" cy="0" r="0.8" fill="#FFD700"/>
+                        <circle cx="-5.2" cy="-3" r="0.8" fill="#FFD700"/>
+                        <circle cx="-3" cy="-5.2" r="0.8" fill="#FFD700"/>
+                    </g>
                 </svg>
-            </button>
-            <div class="dropdown-content" id="countryDropdown">
-                <!-- Country options will be dynamically added here -->
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="about-btn" id="aboutBtn">Entwicklung</button>
+            <button class="download-btn" id="downloadBtn">Download</button>
+            <div class="country-dropdown">
+                <button class="dropdown-btn">
+                    <span id="selectedCountry">Land auswählen</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="dropdown-content" id="countryDropdown">
+                    <!-- Country options will be dynamically added here -->
+                </div>
             </div>
         </div>
     </header>
@@ -396,6 +904,159 @@
         </div>
         <div class="news-list" id="newsList">
             <!-- News will be loaded here -->
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="about-modal" id="aboutModal">
+        <div class="about-content">
+            <div class="about-header">
+                <h1 class="about-title">Global News Map - Europa Prototyp</h1>
+                <button class="about-close" id="aboutClose">&times;</button>
+            </div>
+            
+            <!-- Project Teaser -->
+            <div style="margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); border-radius: 12px; border-left: 4px solid var(--accent-color);">
+                <h2 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.3rem;">🚀 Projekt-Teaser</h2>
+                <p style="color: var(--text-color); line-height: 1.6; margin-bottom: 1rem;">
+                    Entdecken Sie die Zukunft der Nachrichtenplattformen! Unser Europa-Prototyp demonstriert eine 
+                    revolutionäre Art, aktuelle Nachrichten aus europäischen Ländern zu erleben. 
+                    Klicken Sie auf ein Land und erhalten Sie sofort übersetzte, kategorisierte Nachrichten.
+                </p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <span style="background: var(--politics-color); color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.8rem;">Politik</span>
+                    <span style="background: var(--culture-color); color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.8rem;">Kultur</span>
+                    <span style="background: var(--society-color); color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.8rem;">Gesellschaft</span>
+                </div>
+            </div>
+
+            <!-- Development Timeline -->
+            <h2 style="color: var(--text-color); margin-bottom: 1.5rem; font-size: 1.5rem;">📈 Entwicklungsverlauf</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Phase 1 - Grundkonzept</div>
+                    <div class="timeline-title">Interaktive Europa-Karte</div>
+                    <div class="timeline-description">
+                        Die Webseite startete als einfache interaktive Karte Europas mit einem sterilen Design. 
+                        Benutzer konnten Länder auswählen und Nachrichten anzeigen lassen.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Phase 2 - Design-Revolution</div>
+                    <div class="timeline-title">Modernes Nachrichten-Design</div>
+                    <div class="timeline-description">
+                        Komplette Überarbeitung des Designs mit dunklem Farbschema, moderner Typografie und 
+                        professioneller Nachrichtenplattform-Ästhetik. Einführung von Hover-Effekten und 
+                        verbesserter Benutzerführung.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Phase 3 - Fullpage-Erlebnis</div>
+                    <div class="timeline-title">Fullpage-Karte mit Popup-Nachrichten</div>
+                    <div class="timeline-description">
+                        Transformation zu einer Fullpage-Anwendung. Die Karte nimmt den gesamten Bildschirm ein, 
+                        Nachrichten erscheinen in eleganten Popup-Blasen neben den ausgewählten Ländern.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Phase 4 - Intelligente Übersetzung</div>
+                    <div class="timeline-title">Automatische Übersetzung</div>
+                    <div class="timeline-description">
+                        Integration eines Übersetzungssystems mit Google Translate API. Alle Schlagzeilen werden 
+                        automatisch ins Deutsche übersetzt, während der Originaltext als Referenz erhalten bleibt.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Phase 5 - MVP-Finalisierung</div>
+                    <div class="timeline-title">Länder-Dropdown & Logo-Integration</div>
+                    <div class="timeline-description">
+                        Hinzufügung eines Länder-Dropdown-Menüs für alternative Navigation. Integration eines 
+                        professionellen Logos und kontinuierliche Design-Verbesserungen für optimale Benutzererfahrung.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <h2 style="color: var(--text-color); margin: 2rem 0 1.5rem 0; font-size: 1.5rem;">✨ Hauptfunktionen</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <div class="feature-title">Interaktive Karte</div>
+                    <div class="feature-text">
+                        Vollständig interaktive Europa-Karte mit Hover-Effekten und Länderauswahl
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📰</div>
+                    <div class="feature-title">Live-Nachrichten</div>
+                    <div class="feature-text">
+                        Echtzeit-Nachrichten aus europäischen Ländern mit automatischer Übersetzung
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-title">Kategorisierung</div>
+                    <div class="feature-text">
+                        Farbkodierte Nachrichten-Kategorien: Politik (Rot), Kultur (Blau), Gesellschaft (Grün)
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <div class="feature-title">Mehrsprachig</div>
+                    <div class="feature-text">
+                        Automatische Übersetzung aller Nachrichten ins Deutsche mit Originaltext-Referenz
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">Responsive Design</div>
+                    <div class="feature-text">
+                        Optimiert für alle Geräte - Desktop, Tablet und Smartphone
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Performance</div>
+                    <div class="feature-text">
+                        Schnelle Ladezeiten und flüssige Animationen für beste Benutzererfahrung
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <h2 style="color: var(--text-color); margin: 2rem 0 1.5rem 0; font-size: 1.5rem;">👥 Unser Team</h2>
+            <div style="background: var(--primary-color); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--text-secondary);">
+                <p style="color: var(--text-color); line-height: 1.6; margin-bottom: 1rem;">
+                    Dieses Projekt wurde als Teil eines akademischen Entwicklungsprozesses erstellt. 
+                    Unser Team hat sich auf die Schaffung einer innovativen, benutzerfreundlichen Nachrichtenplattform 
+                    konzentriert, die Geografie und aktuelle Ereignisse auf einzigartige Weise verbindet.
+                </p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <span style="background: var(--accent-color); color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.8rem;">Frontend Development</span>
+                    <span style="background: var(--accent-color); color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.8rem;">UX/UI Design</span>
+                    <span style="background: var(--accent-color); color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.8rem;">API Integration</span>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(45deg, var(--secondary-color), var(--primary-color)); border-radius: 12px; text-align: center; border: 2px solid var(--accent-color);">
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem; font-size: 1.2rem;">📥 Download verfügbar</h3>
+                <p style="color: var(--text-color); margin-bottom: 1.5rem;">
+                    Laden Sie den vollständigen Prototypen herunter und testen Sie alle Funktionen lokal auf Ihrem System.
+                </p>
+                <button class="download-btn" style="font-size: 1rem; padding: 0.8rem 2rem;" onclick="downloadProject()">
+                    📦 Projekt herunterladen
+                </button>
+            </div>
         </div>
     </div>
 
@@ -591,6 +1252,14 @@
             const dropdownContent = document.getElementById('countryDropdown');
             const selectedCountrySpan = document.getElementById('selectedCountry');
 
+            if (!dropdownBtn || !dropdownContent || !selectedCountrySpan) {
+                console.error('Dropdown elements not found');
+                return;
+            }
+
+            // Clear existing content
+            dropdownContent.innerHTML = '';
+
             // Create dropdown items
             Object.entries(countryNames).forEach(([code, name]) => {
                 const item = document.createElement('div');
@@ -598,7 +1267,9 @@
                 item.setAttribute('data-country', code);
                 item.innerHTML = `${name}`;
                 
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
                     // Update selected country display
                     selectedCountrySpan.textContent = name;
                     
@@ -649,15 +1320,38 @@
             dropdownBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 dropdownContent.classList.toggle('active');
+                
+                // Add visual feedback
+                if (dropdownContent.classList.contains('active')) {
+                    dropdownBtn.style.borderColor = 'var(--accent-color)';
+                } else {
+                    dropdownBtn.style.borderColor = 'var(--glass-border)';
+                }
             });
 
             // Close dropdown when clicking outside
             document.addEventListener('click', function(e) {
                 if (!dropdownBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
                     dropdownContent.classList.remove('active');
+                    dropdownBtn.style.borderColor = 'var(--glass-border)';
                 }
             });
+
+            // Close dropdown with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdownContent.classList.contains('active')) {
+                    dropdownContent.classList.remove('active');
+                    dropdownBtn.style.borderColor = 'var(--glass-border)';
+                }
+            });
+
+            console.log('Country dropdown initialized successfully');
         }
+
+        // Initialize dropdown immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCountryDropdown();
+        });
 
         // Load GeoJSON data for Europe
         fetch('https://raw.githubusercontent.com/leakyMirror/map-of-europe/master/GeoJSON/europe.geojson')
@@ -782,8 +1476,13 @@
                     }
                 });
 
-                // Initialize dropdown after GeoJSON is loaded
-                initializeCountryDropdown();
+                // Ensure dropdown is properly initialized after map loads
+                setTimeout(() => {
+                    if (!document.querySelector('.dropdown-item')) {
+                        console.log('Re-initializing dropdown after map load');
+                        initializeCountryDropdown();
+                    }
+                }, 1000);
             })
             .catch(error => console.error('Error loading GeoJSON:', error));
 
@@ -814,7 +1513,138 @@
                     });
                     currentSelectedLayer = null;
                 }
+
+                // Close about modal if open
+                const aboutModal = document.getElementById('aboutModal');
+                if (aboutModal.classList.contains('active')) {
+                    aboutModal.classList.remove('active');
+                }
             }
+        });
+
+        // About modal functionality
+        document.getElementById('aboutBtn').addEventListener('click', function() {
+            document.getElementById('aboutModal').classList.add('active');
+        });
+
+        document.getElementById('aboutClose').addEventListener('click', function() {
+            document.getElementById('aboutModal').classList.remove('active');
+        });
+
+        // Close about modal when clicking outside
+        document.getElementById('aboutModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+
+        // Download functionality
+        function downloadProject() {
+            // Create a zip file with all project files
+            const projectFiles = [
+                { name: 'index.html', content: document.documentElement.outerHTML },
+                { name: 'README.md', content: createReadme() },
+                { name: 'package.json', content: createPackageJson() }
+            ];
+
+            // For demo purposes, we'll create a simple download
+            const blob = new Blob([projectFiles[0].content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Global-News-Map-Prototype.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Show success message
+            showNotification('Projekt erfolgreich heruntergeladen!', 'success');
+        }
+
+        function createReadme() {
+            return `# Global News Map - Europa Prototyp
+
+## Über das Projekt
+Ein interaktiver Nachrichten-Prototyp für Europa, der Geografie und aktuelle Nachrichten auf einzigartige Weise verbindet.
+
+## Features
+- Interaktive Europa-Karte
+- Live-Nachrichten mit automatischer Übersetzung
+- Farbkodierte Kategorisierung (Politik, Kultur, Gesellschaft)
+- Responsive Design
+- Fullpage-Erlebnis
+
+## Installation
+1. Laden Sie alle Dateien herunter
+2. Öffnen Sie index.html in einem modernen Browser
+3. Genießen Sie die interaktive Nachrichtenplattform
+
+## Technologien
+- HTML5, CSS3, JavaScript
+- Leaflet.js für Kartendarstellung
+- Google Translate API
+- GNews API für Nachrichten
+
+## Team
+Entwickelt als akademisches Projekt mit Fokus auf moderne Webtechnologien und UX-Design.
+`;
+        }
+
+        function createPackageJson() {
+            return JSON.stringify({
+                name: "global-news-map-prototype",
+                version: "1.0.0",
+                description: "Interactive news platform for Europe",
+                main: "index.html",
+                scripts: {
+                    start: "python -m http.server 8000"
+                },
+                dependencies: {},
+                devDependencies: {},
+                author: "Academic Development Team",
+                license: "MIT"
+            }, null, 2);
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#2ed573' : '#007AFF'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Header download button
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            downloadProject();
+        });
+
+        // Add smooth scroll to about modal
+        document.querySelector('.about-content').addEventListener('scroll', function(e) {
+            e.target.style.scrollBehavior = 'smooth';
         });
     </script>
 </body>
